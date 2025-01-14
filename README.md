@@ -1,1 +1,1 @@
-# computer-science
+#### (Perssonal) Core computer science theory and practice
