@@ -2,7 +2,7 @@
 
 Topics to cover (in no particular order):
 
-1. Floating point arithmetics
+1. Floating point arithmetic
 2. Finite stae machines
 3. Stacks
 4. Queues

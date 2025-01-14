@@ -1,0 +1,31 @@
+References:
+https://gist.github.com/brianclements/841ea7bffdb01346392c
+https://www.cs.cmu.edu/~15122-archive/n17/lec/06-binsearch.pdf
+https://www.bigocheatsheet.com
+https://en.algorithmica.org/hpc/
+
+
+Misc:
+https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf
+https://describingwords.io
+
+Blogs posts:
+https://x.com/lefticus/status/1878518310775493021 What is some piece of Computer Science or programming knowledge that *you* think is "core" but not enough people seem to know?
+https://www.tomdalling.com/blog/software-design/fizzbuzz-in-too-much-detail/
+https://blog.jetbrains.com/rust/2024/03/12/rust-iterators-beyond-the-basics-part-i-building-blocks/
+https://stackoverflow.blog/2022/03/03/stop-aggregating-away-the-signal-in-your-data/
+https://fabiensanglard.net
+https://makemeaprogrammer.com/what-makes-a-good-software-engineer/
+https://youtu.be/yunF2PgJlHU?si=kSJ3kkWEoI6l9GhN What is dependency injection
+https://youtu.be/PK3wL7DXuuw?si=ixjRvXmTmhHmzkND Deterministic Finite Automata
+https://www.youtube.com/watch?v=WwkuAqObplU&t Introduction to Data Oriented Design
+https://www.youtube.com/watch?v=y11XNXi9dgs HashMaps & Dictionaries, Explained Simply
+
+
+Books:
+A Philosophy of Software Design, John Ousterhout
+The Pragmatic Programmer, Hunt and Thomas
+Coders at Work, Peter Siebel
+
+Practice:
+http://codekata.com
