@@ -1,1 +1,1 @@
-#### (Perssonal) Core computer science theory and practice
+#### (Personal) Core computer science theory and practice
