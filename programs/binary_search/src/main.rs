@@ -1,5 +1,7 @@
 //@source http://codekata.com/kata/kata02-karate-chop/
 //@reference https://www.cs.cmu.edu/~15122-archive/n17/lec/06-binsearch.pdf
+//@reference https://matklad.github.io/2023/10/06/what-is-an-invariant.html
+
 
 fn binary_search(target: i32, array: &[i32]) -> i32 {
     //@requires array to be sorted
@@ -11,7 +13,7 @@ fn binary_search(target: i32, array: &[i32]) -> i32 {
     while lo < hi
     //@loop_invariant 0 <= lo && lo <= hi && hi <= array.len(); The first loop invariant, relating lo and hi to each other and the overall bound of the array
     //@loop_invariant (lo == 0 || array[lo-1] < x);
-    //@loop_invariant (hi == n || array[hi] > x);
+    //@loop_invariant (hi == array.len() - 1 || array[hi] > x);
     {
         let mid: usize = lo + (hi-lo)/2;
         //@assert lo <= mid && mid < hi;
