@@ -1,0 +1,7 @@
+[package]
+name = "insertion_point"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+exhaustigen = "0.1.0"
