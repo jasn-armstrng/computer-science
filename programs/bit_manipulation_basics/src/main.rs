@@ -79,42 +79,68 @@ fn main() {
 
     println!("");
 
-    // 5. Left Shift ( << ): Left shift operator is a binary operator which shift the some number of bits, in the given
-    // bit pattern, to the left and appends 0 at the end. Left shift is equivalent to multiplying the bit pattern with 2^k
-    // ( if we are shifting k bits ).
+    // 5. Left Shift ( << ): Left shift operator is a binary operator which shifts some number of bits, in the given bit
+    // pattern, to the left and appends 0 at the end. Left shift is equivalent to multiplying the bit pattern with 2^k
+    // ( if we are shifting k bits )
     // Example 1:
     println!("Left Shift:");
     let g: u32 = 0b001;  // 1 * 2^0 = 1
-    let h: u32 = 0b010;  // 1 * 2^1 = 2, or k
+    let h: u32 = 2;      //
     match g.checked_shl(h) {
-        Some(result) => println!("    {:b} << {:b} = {:b}, or 2^2, or 4", g, h, result),  // 0100 or 4
+        Some(result) => println!("    {:b} << {:b} = {:b}", g, h, result),  // 0100 or 4
         None => println!("Overflow detected!")   // 48, or 110000
     }
-    // In the above g ^ h is evaluated as
-    // g << h = 1 * 2^2 = 4
+    // In the above g << h is evaluated as
+    // move 1 in 0b001 to the left 2 places
+
 
     // Example 2:
     let i: u32 = 0b00001;  // 1 * 2^1 = 2
     let j: u32 = 0b11000;  // (1 * 2^3) + (1 * 2^4) = 24, or k
     match i.checked_shl(j) {
-        Some(result) => println!("    0000{:b} << 0{:b} = {:b}, or 2^24, or {}", i, j, result, result),
-        None => println!("Overflow detected!")   // 48, or 110000
+        Some(result) => println!("    0000{:b} << 0{:b} = {:b}", i, j, result),
+        None => println!("Overflow detected!")
     }
-    // In the above i ^ j is evaluated as
-    // i << j = 1 * 2^k
+    // In the above i << j is evaluated as
+    // move 1 in 0b00001 to the left 24 places giving us 1000000000000000000000000
 
 
     // Example 3:
     let k: u32 = 0b000110;  // 2^1 + 2^2 = 6
-    let l: u32 = 0b010000;  // 2^4 = 16, or k
+    let l: u32 = 16;
     match k.checked_shl(l) {
-        Some(result) => println!("    {:b} << {:b} = {:b}, or 6 * 2^16, or {}", k, l, result, result),  // 48, or 110000
+        Some(result) => println!("    {:b} << {:b} = {:b}", k, l, result),
+        None => println!("Overflow detected!")
+    }
+    // In the above k << l is evaluated as
+    // move 1 in 0b000110 to the left 16 places giving us 1100000000000000000
+    //                                                      <-------------
+    //                                                                    110
+
+    // Note: Shifting (<<, >>) is often faster than INTEGER multiplication and division, especially for powers of 2, due
+    // to its simplicity and direct support in hardware.
+    // Example:
+    // let x: u32 = 5;
+    // let x_by_8: u32 = x << 3;  // or, x * 2^3
+
+    println!("");
+
+    // 6. Right Shift ( >> ): Right shift operator is a binary operator which shift  number of bits, in the given bit
+    // pattern, to the right and append 1 at the end. Right shift is equivalent to dividing the bit pattern with 2k
+    // ( if we are shifting k bits ).
+    // Example 1:
+    println!("Right Shift:");
+    let o: u32 = 0b100;  // 1 * 2^2 = 4
+    let p: u32 = 2;
+    match o.checked_shr(p) {
+        Some(result) => println!("    {:b} >> 0{:b} = {:b}", o, p, result),  // 0100 or 4
         None => println!("Overflow detected!")   // 48, or 110000
     }
+    // In the above o >> p is evaluated as
+    // move o 2 places to the right
 
-    // In the above k ^ l is evaluated as
-    // k << l = 6 * 2^16 = 1100000000000000000, or 393216
+    // Note: Shifting too far right in Rust does not cause a wrap-around. Instead, Rust truncates the value to 0 if the
+    // shift amount exceeds or equals the bit width of the type. This behavior applies to both signed and unsigned integers.
 
-    // So, x << y = x * 2^y
-    // Note: Shifting is usually more efficient than multiplication, as it's a single CPU instruction.
+
 }
