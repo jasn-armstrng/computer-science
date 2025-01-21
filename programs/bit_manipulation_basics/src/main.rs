@@ -109,7 +109,7 @@ fn main() {
     let k: u32 = 0b000110;  // 2^1 + 2^2 = 6
     let l: u32 = 16;
     match k.checked_shl(l) {
-        Some(result) => println!("    {:b} << {:b} = {:b}", k, l, result),
+        Some(result) => println!("    {:b} << {} = {:b}", k, l, result),
         None => println!("Overflow detected!")
     }
     // In the above k << l is evaluated as
@@ -120,8 +120,10 @@ fn main() {
     // Note: Shifting (<<, >>) is often faster than INTEGER multiplication and division, especially for powers of 2, due
     // to its simplicity and direct support in hardware.
     // Example:
-    // let x: u32 = 5;
-    // let x_by_8: u32 = x << 3;  // or, x * 2^3
+    // let x: u32 = 0b101;  // or 5
+    // let x_by_8: u32 = x << 3;  // or, x * 2^3, or shift 101 to the left 3 times
+    // println!("{}, {:b}", x_by_8, x_by_8);  // 40, or 101000
+
 
     println!("");
 
@@ -141,6 +143,4 @@ fn main() {
 
     // Note: Shifting too far right in Rust does not cause a wrap-around. Instead, Rust truncates the value to 0 if the
     // shift amount exceeds or equals the bit width of the type. This behavior applies to both signed and unsigned integers.
-
-
 }
