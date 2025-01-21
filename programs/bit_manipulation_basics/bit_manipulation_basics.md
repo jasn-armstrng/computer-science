@@ -1,4 +1,4 @@
-#### Bit Manipulation Basics
+### Bit Manipulation Basics
 
 **Source:** https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/tutorial/
 
@@ -49,7 +49,7 @@ There are different bitwise operations used in the bit manipulation. These bit o
     ```Rust
     let c: u8 = 0b101;  // 5
     let d: u8 = 0b011;  // 3
-    println!("    {:b} | 0{:b} = {:b}", c, d, c | d);  // 7
+    println!("{:b} | 0{:b} = {:b}", c, d, c | d);  // 7
     // In the above c | d is evaluated as
     // 101 |
     // 011      Each element of the top row is boolean campared with its correspondence in the row below.
@@ -64,7 +64,7 @@ There are different bitwise operations used in the bit manipulation. These bit o
     println!("Bitwise XOR:");
     let e: u8 = 0b101;  // 5
     let f: u8 = 0b011;  // 3
-    println!("    {:b} ^ 0{:b} = {:b}", e, f, e ^ f);  // 6
+    println!("{:b} ^ 0{:b} = {:b}", e, f, e ^ f);  // 6
     // In the above e ^ f is evaluated as
     // 101 ^
     // 011
@@ -142,6 +142,5 @@ There are different bitwise operations used in the bit manipulation. These bit o
 | 0        |   1      | 0        | 1        | 1        | 1        |
 | 1        |   0      | 0        | 1        | 1        | 0        |
 | 1        |   1      | 1        | 1        | 0        | 0        |
-
 
 Bitwise operators are good for saving space and sometimes to cleverly remove dependencies.
