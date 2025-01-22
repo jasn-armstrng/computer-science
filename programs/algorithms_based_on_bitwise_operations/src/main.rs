@@ -1,24 +1,45 @@
 // Source: https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/tutorial/
 
-// 1. Determine if a given number is a power of 2?
+/// Determines if a given number is a power of 2.
+///
+/// # Domain
+/// - The input `x` must be a natural number (`x >= 1`).
+///
+/// # Co-Domain
+/// - The output is a boolean value: `true` or `false`.
+///
+/// # Explanation
+/// - A number `x` is a power of 2 if it has exactly one bit set to `1` in its binary representation.
+/// - For such a number:
+///     - `x - 1` flips all bits to the right of the single set bit in `x` and turns the set bit off.
+///     - Performing a bitwise AND (`x & (x - 1)`) results in `0` for powers of 2.
+///
+/// # Arguments
+/// - `x`: The number to check.
+///
+/// # Returns
+/// - `true` if `x` is a power of 2.
+/// - `false` otherwise.
+///
+/// # Examples
+/// ```rust
+/// assert!(is_power_of_2(1)); // 2^0 = 1
+/// assert!(is_power_of_2(2)); // 2^1 = 2
+/// assert!(is_power_of_2(4)); // 2^2 = 4
+/// assert!(!is_power_of_2(3)); // Not a power of 2
+/// assert!(!is_power_of_2(0)); // Not a natural number
+/// assert!(!is_power_of_2(-5)); // Not a natural number
+/// ```
 fn is_power_of_2(x: i32) -> bool {
-    // Domain: x ∈ N, where N is the set natural numbers, i.e. x >= 1
-    // Co-Domain: The result of 2^n where n ∈ {0, N}, i.e. N including 0
-
-    // A number n is a power of 2 if it has exactly one bit set to 1 in its binary representation.
-    // For a number n that is a power of 2, n−1 flips all bits to the right of the single set bit in n and turns the set bit off.
-    // Then n & (n-1) is a binary number of all zeros
     if (x > 0) && x & (x-1) == 0 {
         return true;
     }
-
     false
 }
 
 
 fn main() {
-    let x: i32 = 0;
-    assert!(is_power_of_2(x), "{} is not a power of 2.", x);
+    assert!(is_power_of_2(1));
 }
 
 // 2. Count the number of ones in the binary representation of the given number.
