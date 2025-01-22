@@ -58,6 +58,7 @@ A list of small, useful CLI tools that leverage each bit manipulation operation.
 - **Utility**: Input RGB values to encode them into a 32-bit integer and decode them back into R, G, and B components.
 - **Learning Focus**: Use AND, OR, shifts, and masks to manipulate packed data.
 <br>
+
 - [ ] **Bitfield Manipulator**
 - **Description**: Create a tool to pack, unpack, set, and toggle specific fields in a bitfield.
 - **Utility**: Input a bitfield and manipulate specific bits based on user commands (e.g., toggle, clear, set).
