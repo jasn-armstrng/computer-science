@@ -91,6 +91,52 @@ fn ith_bit_set(x: u32, i: u32) -> bool {
     return x & bit_mask > 0;
 }
 
+/// Generates all possible subsets of a given set of strings.
+///
+/// # Arguments
+/// * `x` - A slice of strings representing the input set.
+///
+/// # Returns
+/// A `Vec<Vec<String>>` containing all subsets of the input set.
+///
+/// # Example
+/// ```rust
+/// let input = vec!["a".to_string(), "b".to_string(), "c".to_string()];
+/// let subsets = possible_subsets(&input);
+/// assert_eq!(subsets, vec![
+///     vec![],                 // Empty subset
+///     vec!["a".to_string()],  // {a}
+///     vec!["b".to_string()],  // {b}
+///     vec!["a".to_string(), "b".to_string()], // {a, b}
+///     vec!["c".to_string()],  // {c}
+///     vec!["a".to_string(), "c".to_string()], // {a, c}
+///     vec!["b".to_string(), "c".to_string()], // {b, c}
+///     vec!["a".to_string(), "b".to_string(), "c".to_string()] // {a, b, c}
+/// ]);
+/// ```
+///
+// First iteration is 0 & (1 << 0) which evals to 0 & 1, which is 0 three times as per loop, eventually pushing 000 to subset, and then subset to subsets
+// Second iteration is 1 & (1 << 0) which evals to 1 & 1, then 01 & 10 which is 0 (false, don't enter loop), then 01 and 100, which is also 0 (false, don't enter loop), so we push 100, or {a} to subset and then subsets
+// ...
+fn possible_subsets(x: &[String]) -> Vec<Vec<String>> {
+    let mut subsets = Vec::new(); // To store all subsets
+    let n = x.len(); // Number of elements in the input set
+    let total_subsets = 2_i32.pow(n as u32); // Total subsets = 2^n
+
+    // Iterate over all possible subset IDs (0 to 2^n - 1)
+    for i in 0..total_subsets {
+        let mut subset = Vec::new(); // Create a new subset
+        for j in 0..n {
+            // Check if the jth element is included in the ith subset
+            if i & (1 << j) != 0 {
+                subset.push(x[j].clone());
+            }
+        }
+        subsets.push(subset);
+    }
+
+    subsets
+}
 
 fn main() {
     assert!(is_power_of_2(1));
@@ -98,9 +144,34 @@ fn main() {
     assert_eq!(number_of_bits_set(0), 0);
     assert_eq!(number_of_bits_set(u32::MAX), 32);
     assert!(ith_bit_set(5, 0));
+
+    let input = vec!["a".to_string(), "b".to_string(), "c".to_string()];
+    let subsets = possible_subsets(&input);
+    assert_eq!(subsets, vec![
+        vec![],                 // Empty subset
+        vec!["a".to_string()],  // {a}
+        vec!["b".to_string()],  // {b}
+        vec!["a".to_string(), "b".to_string()], // {a, b}
+        vec!["c".to_string()],  // {c}
+        vec!["a".to_string(), "c".to_string()], // {a, c}
+        vec!["b".to_string(), "c".to_string()], // {b, c}
+        vec!["a".to_string(), "b".to_string(), "c".to_string()] // {a, b, c}
+    ]);
 }
 
 // 4. Generate all the possible subsets of a set ?
+// a b c
+
+// 1 1 1
+
+// 101
+// 001
+// 011
+// 010
+// 111
+// 110
+// 100
+// 000
 
 
 // 5. Find the largest power of 2 (most significant bit in binary form), which is less than or equal to the given number N.
