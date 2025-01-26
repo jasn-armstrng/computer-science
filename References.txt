@@ -9,7 +9,7 @@ Misc:
 https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf
 https://describingwords.io
 
-Blogs posts:
+Blog posts:
 https://matklad.github.io/2023/10/06/what-is-an-invariant.html
 https://x.com/lefticus/status/1878518310775493021 What is some piece of Computer Science or programming knowledge that *you* think is "core" but not enough people seem to know?
 https://www.tomdalling.com/blog/software-design/fizzbuzz-in-too-much-detail/
@@ -21,6 +21,7 @@ https://youtu.be/yunF2PgJlHU?si=kSJ3kkWEoI6l9GhN What is dependency injection
 https://youtu.be/PK3wL7DXuuw?si=ixjRvXmTmhHmzkND Deterministic Finite Automata
 https://www.youtube.com/watch?v=WwkuAqObplU&t Introduction to Data Oriented Design
 https://www.youtube.com/watch?v=y11XNXi9dgs HashMaps & Dictionaries, Explained Simply
+https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction
 
 Tutorials:
 Bit manipulation: https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/tutorial/
