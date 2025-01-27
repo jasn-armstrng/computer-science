@@ -48,15 +48,14 @@ def binary_increment(binary_number):
         raise ValueError("Input must be an integer.")
 
     carry = 1
-    loop = True
-    current_mask = 0b1
+    current_mask = 0b1  # Bitmask used to iterate over the bits in the binary number
     bit_position = 0
-    while loop:
+    while True:
         current_bit = (binary_number & current_mask) >> bit_position
         if current_bit == 0 and carry == 1:
             binary_number = binary_number ^ current_mask
             carry = 0  # (carry is resolved,
-            loop = False  # stop propagation)
+            break  # stop propagation)
         elif current_bit == 1 and carry == 1:
             binary_number = binary_number ^ current_mask
             # Move current_mask left by 1 to next bit position to compare
@@ -70,6 +69,7 @@ def binary_increment(binary_number):
 
 
 if __name__ == "__main__":
+    assert(binary_increment(-0b10)) == -0b1  # Signed binary
     assert(binary_increment(0b0000)) == 0b0001
     assert(binary_increment(0b0011)) == 0b0100
     assert(binary_increment(0b0101)) == 0b0110
