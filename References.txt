@@ -22,6 +22,7 @@ https://youtu.be/PK3wL7DXuuw?si=ixjRvXmTmhHmzkND Deterministic Finite Automata
 https://www.youtube.com/watch?v=WwkuAqObplU&t Introduction to Data Oriented Design
 https://www.youtube.com/watch?v=y11XNXi9dgs HashMaps & Dictionaries, Explained Simply
 https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction
+https://github.com/mohitmishra786/underTheHoodOfExecutables/tree/main
 
 Tutorials:
 Bit manipulation: https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/tutorial/
