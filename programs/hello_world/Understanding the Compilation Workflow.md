@@ -1,4 +1,4 @@
-#### Understanding the Compilation Workflow: From Source Code to Mach-O Binary with Clang and Otool
+### Understanding the Compilation Workflow: From Source Code to Mach-O Binary with Clang and Otool
 ---
 
 ### 1. **Compile the Program**
@@ -146,7 +146,7 @@ otool -tV hello
 | `otool -tV hello.o`                  | Disassemble the object file.                | ARM64 assembly of `hello.o`.     |
 | `otool -tV hello`                    | Disassemble the executable binary.          | ARM64 assembly of `hello`.       |
 
----
+<br>
 
 ### Why Understanding This Workflow is Useful
 
