@@ -4,7 +4,7 @@ Topics to cover (in no particular order):
 
 1. -[ ] Floating point arithmetic
 2. -[ ] Finite stae machines
-3. -[ ] Stacks
+3. -[X] Stacks
 4. -[ ] Queues
 5. -[ ] Heap
 5. -[ ] Virtual memory
