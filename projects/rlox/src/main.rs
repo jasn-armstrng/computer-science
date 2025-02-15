@@ -4,27 +4,37 @@ use crate::modules::reader::*;
 
 // Standard libarary
 use ::std::env;
-use std::process;
 
-// Interpreter entry point
-fn run(args: &[String]) {
-    // NOTE: We expect that that args[1] is the filename. All other arguments entered at the command-line are ignored
-    //
-    read_source(&args[1]);
+/// Interpreter main entry point. Executes the source file reader, tokenizer, parser, and evaluator
+fn run(filepath: &String) -> Result<(), Box<dyn std::error::Error>> {
+    // Read the source file contents
+    let _contents = read_source(filepath)?;
+
+    // Tokenize the source code
+    // let tokens = tokenize(&contents)?;
+
+    // Parse the tokens into an abstract syntax tree (AST)
+    // let ast = parse(&tokens)?;
+
+    // Evaluate the AST
+    // evaluate(&ast)?;
+
+    Ok(())
 }
 
-fn main() {
-    // Collect arguments from the command-line
-    let args: Vec<String> = env::args().collect(); // Note: This will panic if the argument contains invalid Unicode
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // [Note] Box<dyn std::error::Error> is read as "any kind of error".
 
-    // Check if an argument was provided
-    if args.len() < 2 {
-        eprintln!("ERROR: Not enough arguments");
-        process::exit(1);
-    }
+    // Check if filepath argument was provided. Gracefully exit if not.
+    // All other command-line arguments > 1 are ignored
+    let filepath = env::args().nth(1).ok_or("ERROR: No file path provided")?;
+
+    // Debug filepath
+    dbg!(&filepath);
 
     // Enter intepreter main
-    run(&args);
+    run(&filepath)?;
 
-    dbg!(args);
+    // [Note] Ok(()) Equivalent to C's return 0.
+    Ok(())
 }

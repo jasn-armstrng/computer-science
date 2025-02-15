@@ -1,5 +1,5 @@
 #### TODO (Problems):
- - [] 1. Read a source file
+ - [X] 1. Read a source file
  - [] 2. Tokenize the source file
  - [] 3. Parse the tokens to an AST
  - [] 4. Evaluate the expressions on the AST
