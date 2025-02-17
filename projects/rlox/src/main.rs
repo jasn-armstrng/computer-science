@@ -1,6 +1,7 @@
 // External modules
 pub mod modules;
 use crate::modules::reader::*;
+use crate::modules::tokenize::*;
 
 // Standard libarary
 use ::std::env;
@@ -8,10 +9,11 @@ use ::std::env;
 /// Interpreter main entry point. Executes the source file reader, tokenizer, parser, and evaluator
 fn run(filepath: &String) -> Result<(), Box<dyn std::error::Error>> {
     // Read the source file contents
-    let _contents = read_source(filepath)?;
+    let contents = read_source(filepath)?;
 
     // Tokenize the source code
-    // let tokens = tokenize(&contents)?;
+    let mut tokenizer = Tokenizer::new(&contents);
+    let tokens = tokenizer.scan_tokens();
 
     // Parse the tokens into an abstract syntax tree (AST)
     // let ast = parse(&tokens)?;
