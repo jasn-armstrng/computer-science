@@ -5,7 +5,7 @@ use std::str::Chars;
 // [Note] Tokens are the meaningful "words" and "symbols" that make up the language's grammar.
 
 /// Enum representing the different types of tokens that can be produced by the tokenizer.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum TokenType {
     // Single-character tokens.
     LeftParen,
@@ -60,7 +60,7 @@ pub enum TokenType {
 
 /// Struct representing a token produced by the tokenizer.
 /// Tokens produced by the tokenizer have a type, a lexeme (the actual text of the token), and a line number.
-#[derive(Debug)] // [Note] Derive must be implemented for enclosed structs. Here, TokenType
+#[derive(Debug, PartialEq)] // [Note] Derive must be implemented for enclosed structs. Here, TokenType
 pub struct Token {
     pub token_type: TokenType,
     pub lexeme: String,
@@ -134,8 +134,8 @@ impl<'a> Tokenizer<'a> {
 
         // When scanning is complete append the EOF token to tokens
         tokens.push(self.create_token(TokenType::EOF, String::from("")));
-        // Check tokens
-        dbg!(tokens)
+
+        tokens
     }
 
     pub fn create_token(&mut self, token_type: TokenType, lexeme: String) -> Token {
@@ -144,142 +144,176 @@ impl<'a> Tokenizer<'a> {
 
     // [Note] This function does the below,
     // 1. Classifies and creates a token
-    // 2. Each of its sub-routines move the iterator forward.
+    // 2. Each of its sub-routines moves the iterator forward.
     pub fn scan_token(&mut self, c: char) -> Token {
-        self.skip_whitespace_tabs_newlines();
-
+        // 1. Check if we are matching all the characters in source to some TokenType
         self.match_single_and_operator_tokens(&c)
     }
 
-    pub fn skip_whitespace_tabs_newlines(&mut self) {
-        match self.chars.peek() {
-            Some(&' ') => {
-                // TODO: Refactor, combine the below into an advance.
-                self.chars.next();
-                self.current += 1;
-            }
-            Some(&'\t') => {
-                self.chars.next();
-                self.current += 1;
-            }
-            Some(&'\r') => {
-                self.chars.next();
-                self.current += 1;
-            }
-            Some(&'\n') => {
-                // Increment line number and consume the newline character
-                // [Note] Allows the tokenizer to correctly track line number positions within the source code.
-                self.line += 1;
-                self.current = 0;
-                self.chars.next();
-            }
-            _ => {}
-        }
-    }
-
-    // [Question] Why is there a lifetime partnership between the function and the char reference.
-    // [Answer] The lifetime partnership is necessary because the function needs to borrow the char reference for the duration of the function call.
-    // This ensures that the char reference remains valid throughout the function call.
-    pub fn match_single_and_operator_tokens<'b>(&mut self, c: &'b char) -> Token {
+    pub fn match_single_and_operator_tokens(&mut self, c: &char) -> Token {
         match c {
             '(' => {
-                self.chars.next(); // consume the character
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::LeftParen, c.to_string())
             }
             ')' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::RightParen, c.to_string())
             }
             '{' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::LeftBrace, c.to_string())
             }
             '}' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::RightBrace, c.to_string())
             }
             '.' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::Dot, c.to_string())
             }
             ',' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::Comma, c.to_string())
             }
             ';' => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::Semicolon, c.to_string())
             }
+            '+' => {
+                self.advance();
+                self.create_token(TokenType::Plus, c.to_string())
+            }
+            '-' => {
+                self.advance();
+                self.create_token(TokenType::Minus, c.to_string())
+            }
+            '*' => {
+                self.advance();
+                self.create_token(TokenType::Star, c.to_string())
+            }
             '=' => {
-                // [Question] In what case would unwrap() panic!
-                // [Answer] If the next character is not available, unwrap() will panic!
-                // [Note] The next character is always available because we peeked it before in scan_tokens()
-                // Still favor unwrap_or()
+                self.advance();
                 if self.chars.peek().unwrap_or(&' ') == &'=' {
-                    self.chars.next();
-                    self.current += 1;
-                    self.create_token(TokenType::EqualEqual, c.to_string())
+                    self.advance();
+                    self.create_token(TokenType::EqualEqual, String::from("=="))
                 } else {
-                    self.chars.next();
-                    self.current += 1;
                     self.create_token(TokenType::Equal, c.to_string())
                 }
             }
-            '/' => {
-                self.chars.next();
-                self.current += 1;
-                self.create_token(TokenType::Slash, c.to_string())
-            }
-            '*' => {
-                self.chars.next();
-                self.current += 1;
-                self.create_token(TokenType::Star, c.to_string())
-            }
             '!' => {
+                self.advance();
                 if self.chars.peek().unwrap_or(&' ') == &'=' {
-                    self.chars.next();
-                    self.current += 1;
-                    self.create_token(TokenType::BangEqual, c.to_string())
+                    self.advance();
+                    self.create_token(TokenType::BangEqual, String::from("!="))
                 } else {
-                    self.chars.next();
-                    self.current += 1;
                     self.create_token(TokenType::Bang, c.to_string())
                 }
             }
             '<' => {
+                self.advance();
                 if self.chars.peek().unwrap_or(&' ') == &'=' {
-                    self.chars.next();
-                    self.current += 1;
-                    self.create_token(TokenType::LessEqual, c.to_string())
+                    self.advance();
+                    self.create_token(TokenType::LessEqual, String::from("<="))
                 } else {
-                    self.chars.next();
-                    self.current += 1;
                     self.create_token(TokenType::Less, c.to_string())
                 }
             }
             '>' => {
+                self.advance();
                 if self.chars.peek().unwrap_or(&' ') == &'=' {
-                    self.chars.next();
-                    self.current += 1;
-                    self.create_token(TokenType::GreaterEqual, c.to_string())
+                    self.advance();
+                    self.create_token(TokenType::GreaterEqual, String::from(">="))
                 } else {
-                    self.chars.next();
-                    self.current += 1;
                     self.create_token(TokenType::Greater, c.to_string())
                 }
             }
             _ => {
-                self.chars.next();
-                self.current += 1;
+                self.advance();
                 self.create_token(TokenType::Illegal, c.to_string())
             }
         }
+    }
+
+    pub fn advance(&mut self) {
+        self.chars.next();
+        self.current += 1;
+    }
+}
+
+/// Tests for single character tokens and operators
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn single_character_tokens_and_operators() {
+        let input = String::from("=+(){}<=.<!>!=-==*");
+        let mut tokenizer = Tokenizer::new(&input);
+        let tokens = tokenizer.scan_tokens();
+
+        assert_eq!(
+            tokens[0],
+            Token::new(TokenType::Equal, String::from("="), 1, 1)
+        );
+        assert_eq!(
+            tokens[1],
+            Token::new(TokenType::Plus, String::from("+"), 1, 2)
+        );
+        assert_eq!(
+            tokens[2],
+            Token::new(TokenType::LeftParen, String::from("("), 1, 3)
+        );
+        assert_eq!(
+            tokens[3],
+            Token::new(TokenType::RightParen, String::from(")"), 1, 4)
+        );
+        assert_eq!(
+            tokens[4],
+            Token::new(TokenType::LeftBrace, String::from("{"), 1, 5)
+        );
+        assert_eq!(
+            tokens[5],
+            Token::new(TokenType::RightBrace, String::from("}"), 1, 6)
+        );
+        assert_eq!(
+            tokens[6],
+            Token::new(TokenType::LessEqual, String::from("<="), 1, 8)
+        );
+        assert_eq!(
+            tokens[7],
+            Token::new(TokenType::Dot, String::from("."), 1, 9)
+        );
+        assert_eq!(
+            tokens[8],
+            Token::new(TokenType::Less, String::from("<"), 1, 10)
+        );
+        assert_eq!(
+            tokens[9],
+            Token::new(TokenType::Bang, String::from("!"), 1, 11)
+        );
+        assert_eq!(
+            tokens[10],
+            Token::new(TokenType::Greater, String::from(">"), 1, 12)
+        );
+        assert_eq!(
+            tokens[11],
+            Token::new(TokenType::BangEqual, String::from("!="), 1, 14)
+        );
+        assert_eq!(
+            tokens[12],
+            Token::new(TokenType::Minus, String::from("-"), 1, 15)
+        );
+        assert_eq!(
+            tokens[13],
+            Token::new(TokenType::EqualEqual, String::from("=="), 1, 17)
+        );
+        assert_eq!(
+            tokens[14],
+            Token::new(TokenType::Star, String::from("*"), 1, 18)
+        );
+        assert_eq!(
+            tokens[15],
+            Token::new(TokenType::EOF, String::from(""), 1, 18)
+        );
     }
 }

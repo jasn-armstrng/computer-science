@@ -13,7 +13,7 @@ fn run(filepath: &String) -> Result<(), Box<dyn std::error::Error>> {
 
     // Tokenize the source code
     let mut tokenizer = Tokenizer::new(&contents);
-    let tokens = tokenizer.scan_tokens();
+    let _tokens = tokenizer.scan_tokens();
 
     // Parse the tokens into an abstract syntax tree (AST)
     // let ast = parse(&tokens)?;
