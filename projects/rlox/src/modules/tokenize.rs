@@ -94,8 +94,9 @@ pub struct Tokenizer<'a> {
     current: usize, // [Question] Why is usize used here for the current position in the source code?
     // [Answer] ...
     line: u32, // [Question] What is the difference between a usize and a u32?
-               // [Answer] usize is an unsigned integer type that can hold the maximum value of the system's pointer size.
-               // u32 is an unsigned integer type that can hold values from 0 to 4294967295.
+    // [Answer] usize is an unsigned integer type that can hold the maximum value of the system's pointer size.
+    // u32 is an unsigned integer type that can hold values from 0 to 4294967295.
+    column: usize,
 }
 
 impl<'a> Tokenizer<'a> {
@@ -113,15 +114,13 @@ impl<'a> Tokenizer<'a> {
             start: 0,
             current: 0,
             line: 1,
+            column: 0,
         }
     }
 
     /// Main entry point for scanning tokens
     //  [Note] scan_tokens does not move the iterator forward
     pub fn scan_tokens(&mut self) -> Vec<Token> {
-        // Create a peekable iterator handler for the source
-        // let mut chars = self.source.chars().peekable();
-
         // Collection for scanned tokens
         let mut tokens: Vec<Token> = Vec::new();
 
@@ -129,25 +128,52 @@ impl<'a> Tokenizer<'a> {
             // Scanning here
             self.start = self.current;
             let token = self.scan_token(c);
-            tokens.push(token);
+            match token {
+                Some(token) => tokens.push(token),
+                None => (),
+            }
         }
-
         // When scanning is complete append the EOF token to tokens
         tokens.push(self.create_token(TokenType::EOF, String::from("")));
 
+        for t in &tokens {
+            eprintln!(" = {:?}", t);
+        }
         tokens
     }
 
     pub fn create_token(&mut self, token_type: TokenType, lexeme: String) -> Token {
-        Token::new(token_type, lexeme, self.line, self.current)
+        Token::new(token_type, lexeme, self.line, self.column)
     }
 
     // [Note] This function does the below,
-    // 1. Classifies and creates a token
+    // 1. Classifies and creates a valid token
     // 2. Each of its sub-routines moves the iterator forward.
-    pub fn scan_token(&mut self, c: char) -> Token {
-        // 1. Check if we are matching all the characters in source to some TokenType
-        self.match_single_and_operator_tokens(&c)
+    pub fn scan_token(&mut self, c: char) -> Option<Token> {
+        // 1. Match and skip whitespace and escape characters
+        if self.skip_whitespace_and_escape_characters(&c) {
+            return None;
+        }
+        // 2. Match and tokenize single and operator tokens
+        Some(self.match_single_and_operator_tokens(&c))
+    }
+
+    pub fn skip_whitespace_and_escape_characters(&mut self, c: &char) -> bool {
+        match c {
+            ' ' | '\r' | '\t' => {
+                self.advance();
+                return true;
+            }
+            '\n' => {
+                // [Design] Should I put the below into a separate function?
+                self.chars.next();
+                self.line += 1; // Move to the next line
+                self.column = 0; // Reset column to 0
+                self.current += 1;
+                return true;
+            }
+            _ => false,
+        }
     }
 
     pub fn match_single_and_operator_tokens(&mut self, c: &char) -> Token {
@@ -229,6 +255,7 @@ impl<'a> Tokenizer<'a> {
                 }
             }
             _ => {
+                // The below is a hack till I figure out how to just return the tokens
                 self.advance();
                 self.create_token(TokenType::Illegal, c.to_string())
             }
@@ -238,6 +265,7 @@ impl<'a> Tokenizer<'a> {
     pub fn advance(&mut self) {
         self.chars.next();
         self.current += 1;
+        self.column += 1;
     }
 }
 
@@ -314,6 +342,22 @@ mod tests {
         assert_eq!(
             tokens[15],
             Token::new(TokenType::EOF, String::from(""), 1, 18)
+        );
+    }
+
+    #[test]
+    fn skip_whitespace() {
+        let input = String::from("  \t\t+    ");
+        let mut tokenizer = Tokenizer::new(&input);
+        let tokens = tokenizer.scan_tokens();
+
+        assert_eq!(
+            tokens[0],
+            Token::new(TokenType::Plus, String::from("+"), 1, 5)
+        );
+        assert_eq!(
+            tokens[1],
+            Token::new(TokenType::EOF, String::from(""), 1, 9)
         );
     }
 }
